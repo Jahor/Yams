@@ -48,7 +48,7 @@ public class YAMLDecoder {
     public var encoding: Parser.Encoding
 }
 
-struct YAMLNodeDecoder: Decoder {
+public struct YAMLNodeDecoder: Decoder {
 
     let node: Node
 
