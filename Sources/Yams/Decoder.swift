@@ -50,7 +50,7 @@ public class YAMLDecoder {
 
 public struct YAMLNodeDecoder: Decoder {
 
-    let node: Node
+    public let node: Node
 
     init(referencing node: Node, userInfo: [CodingUserInfoKey: Any], codingPath: [CodingKey] = []) {
         self.node = node
@@ -60,24 +60,24 @@ public struct YAMLNodeDecoder: Decoder {
 
     // MARK: - Swift.Decoder Methods
 
-    let codingPath: [CodingKey]
-    let userInfo: [CodingUserInfoKey: Any]
+    public let codingPath: [CodingKey]
+    public let userInfo: [CodingUserInfoKey: Any]
 
-    func container<Key>(keyedBy type: Key.Type) throws -> KeyedDecodingContainer<Key> {
+    public func container<Key>(keyedBy type: Key.Type) throws -> KeyedDecodingContainer<Key> {
         guard let mapping = node.mapping?.flatten() else {
             throw _typeMismatch(at: codingPath, expectation: Node.Mapping.self, reality: node)
         }
         return .init(_KeyedDecodingContainer<Key>(decoder: self, wrapping: mapping))
     }
 
-    func unkeyedContainer() throws -> UnkeyedDecodingContainer {
+    public func unkeyedContainer() throws -> UnkeyedDecodingContainer {
         guard let sequence = node.sequence else {
             throw _typeMismatch(at: codingPath, expectation: Node.Sequence.self, reality: node)
         }
         return _UnkeyedDecodingContainer(decoder: self, wrapping: sequence)
     }
 
-    func singleValueContainer() throws -> SingleValueDecodingContainer { return self }
+    public func singleValueContainer() throws -> SingleValueDecodingContainer { return self }
 
     // MARK: -
 
@@ -215,9 +215,9 @@ extension YAMLNodeDecoder: SingleValueDecodingContainer {
 
     // MARK: - Swift.SingleValueDecodingContainer Methods
 
-    func decodeNil() -> Bool { return node.null == NSNull() }
-    func decode<T>(_ type: T.Type) throws -> T where T: Decodable & ScalarConstructible { return try construct(type) }
-    func decode<T>(_ type: T.Type) throws -> T where T: Decodable {return try construct(type) ?? type.init(from: self) }
+    public func decodeNil() -> Bool { return node.null == NSNull() }
+    public func decode<T>(_ type: T.Type) throws -> T where T: Decodable & ScalarConstructible { return try construct(type) }
+    public func decode<T>(_ type: T.Type) throws -> T where T: Decodable {return try construct(type) ?? type.init(from: self) }
 
     // MARK: -
 
